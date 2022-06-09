@@ -1,0 +1,15 @@
+header {
+  z-index: 1;
+}
+
+.img_cover {
+  height: 215px;
+  object-fit: cover;
+}
+
+.notFound {
+  grid-template-columns: 1fr !important;
+  font-size: 1.8rem;
+  font-weight: 600;
+  width: 100%;
+}
