@@ -13,3 +13,7 @@ header {
   font-weight: 600;
   width: 100%;
 }
+
+.discount {
+  height: 0;
+}

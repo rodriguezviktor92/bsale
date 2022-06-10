@@ -52,10 +52,30 @@ function getProductsList(currentPage = 0) {
                             <div class="card-body text-white-50">
                                 <p class="card-text">${product.name}</p>
                             </div>
+                            <div class="discount card-body text-white-50" style="padding:10px">
+                              <h6 class="card-title" style="text-decoration:line-through;">
+                                <span>${
+                                  product.discount > 0
+                                    ? `$ ${discountPrice(
+                                        product.price,
+                                        product.discount
+                                      )}`
+                                    : ''
+                                }</span>
+                              </h6>
+                            </div>
                             <div
-                                class="card-body text-white-50 d-flex justify-content-between align-items-baseline"
+                                class="card-body text-white-50 d-flex justify-content-between align-items-baseline" style="padding:10px"
                             >
-                            <h5 class="card-title"><span class="price">$ ${product.price}</span></h5>
+                            <h5 class="card-title"><span>$ ${
+                              product.price
+                            }</span></h5>
+                           
+                            <span  style="font-size: 13px; font-weight: 600; color: green">${
+                              product.discount > 0
+                                ? `${product.discount}% OFF`
+                                : ``
+                            }</span>
                             <a href="#" class="btn btn-primary">Add to cart</a>
                         </div>
                     </div>
@@ -94,6 +114,9 @@ function getProductsList(currentPage = 0) {
     });
 }
 
+function discountPrice(price, discount) {
+  return price + (price * discount) / 100;
+}
 (function getCategories() {
   fetch(`http://localhost:3001/categories`)
     .then((response) => response.json())
