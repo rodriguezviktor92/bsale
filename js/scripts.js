@@ -3,7 +3,7 @@ const searchButton = document.getElementById('search');
 const categorySelect = document.getElementById('category');
 const paginationUL = document.getElementById('pagination');
 
-searchButton.addEventListener('click', getProductsList);
+searchButton.addEventListener('click', () => getProductsList());
 categorySelect.addEventListener('change', () => getProductsList());
 
 let currentPage = 0;
