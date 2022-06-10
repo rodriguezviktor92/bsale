@@ -17,7 +17,8 @@ function pagination(id) {
 }
 
 function getProductsList(currentPage = 0) {
-  console.log(currentPage);
+  const default_url_image =
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRssaEpDZ2QDfCM4FHEBDx6C9lJ2VolMcKtvm3QdvSxTcDrWnMjzAUAja636gNn0LBYlbY&usqp=CAU';
   const search = document.getElementById('searchInput').value.trim();
   const category = document.getElementById('category').value.trim();
 
@@ -38,7 +39,7 @@ function getProductsList(currentPage = 0) {
         data.content.forEach((product) => {
           const image = product.url_image
             ? product.url_image
-            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRssaEpDZ2QDfCM4FHEBDx6C9lJ2VolMcKtvm3QdvSxTcDrWnMjzAUAja636gNn0LBYlbY&usqp=CAU';
+            : default_url_image;
 
           productList.innerHTML += `<div class="col d-flex justify-content-center mb-4">
                         <div class="card shadow mb-1 bg-dark rounded" style="width: 20rem">
