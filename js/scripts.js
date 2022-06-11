@@ -16,6 +16,8 @@ function pagination(id) {
   getProductsList(currentPage);
 }
 
+let currentProducts = [];
+
 function getProductsList(currentPage = 0) {
   const default_url_image =
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRssaEpDZ2QDfCM4FHEBDx6C9lJ2VolMcKtvm3QdvSxTcDrWnMjzAUAja636gNn0LBYlbY&usqp=CAU';
@@ -35,6 +37,7 @@ function getProductsList(currentPage = 0) {
     .then((response) => response.json())
     .then((data) => {
       if (data.content.length) {
+        currentProducts = data.content;
         productList.innerHTML = '';
         data.content.forEach((product) => {
           const image = product.url_image
@@ -76,7 +79,9 @@ function getProductsList(currentPage = 0) {
                                 ? `${product.discount}% OFF`
                                 : ``
                             }</span>
-                            <a href="#" class="btn btn-primary">Add to cart</a>
+                            <a href="#" onclick="addToCart(${
+                              product.id
+                            })" class="btn btn-primary">Add to cart</a>
                         </div>
                     </div>
                 `;
@@ -117,6 +122,7 @@ function getProductsList(currentPage = 0) {
 function discountPrice(price, discount) {
   return price + (price * discount) / 100;
 }
+
 (function getCategories() {
   fetch(`http://localhost:3001/categories`)
     .then((response) => response.json())
@@ -129,4 +135,44 @@ function discountPrice(price, discount) {
     });
 })();
 
+function getCart() {
+  if (localStorage.getItem('cart')) {
+    return JSON.parse(localStorage.getItem('cart'));
+  } else {
+    const cart = [];
+    localStorage.setItem('cart', JSON.stringify(cart));
+    return cart;
+  }
+}
+
+function addToCart(productId) {
+  const cart = JSON.parse(localStorage.getItem('cart'));
+
+  /* si el producto existe aumentar la cantidad */
+  if (cart.find((product) => product.id === productId)) {
+    const productIndex = cart.findIndex((product) => product.id === productId);
+    cart[productIndex].quantity++;
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert('Agregado al carrito');
+  } else {
+    const currentProduct = currentProducts.find(
+      (product) => product.id === productId
+    );
+
+    const product = {
+      product: currentProduct,
+      id: currentProduct.id,
+      quantity: 1,
+    };
+
+    cart.push(product);
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert('Agregado al carrito');
+  }
+}
+
+const cart = getCart();
+console.log(cart);
 getProductsList();
