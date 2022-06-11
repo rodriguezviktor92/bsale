@@ -2,6 +2,7 @@ const productList = document.getElementById('productList');
 const searchButton = document.getElementById('search');
 const categorySelect = document.getElementById('category');
 const paginationUL = document.getElementById('pagination');
+const cartModal = document.getElementById('cartModal');
 
 searchButton.addEventListener('click', () => getProductsList());
 categorySelect.addEventListener('change', () => getProductsList());
@@ -137,6 +138,7 @@ function discountPrice(price, discount) {
 
 function getCart() {
   if (localStorage.getItem('cart')) {
+    showProductsCart(JSON.parse(localStorage.getItem('cart')));
     return JSON.parse(localStorage.getItem('cart'));
   } else {
     const cart = [];
@@ -148,12 +150,12 @@ function getCart() {
 function addToCart(productId) {
   const cart = JSON.parse(localStorage.getItem('cart'));
 
-  /* si el producto existe aumentar la cantidad */
   if (cart.find((product) => product.id === productId)) {
     const productIndex = cart.findIndex((product) => product.id === productId);
     cart[productIndex].quantity++;
 
     localStorage.setItem('cart', JSON.stringify(cart));
+    showProductsCart(cart);
     alert('Agregado al carrito');
   } else {
     const currentProduct = currentProducts.find(
@@ -169,10 +171,51 @@ function addToCart(productId) {
     cart.push(product);
 
     localStorage.setItem('cart', JSON.stringify(cart));
+    showProductsCart(cart);
     alert('Agregado al carrito');
   }
 }
 
 const cart = getCart();
+
+function showProductsCart(cart) {
+  cartModal.innerHTML = '';
+  cart.forEach((product) => {
+    cartModal.innerHTML += `<div class="card mb-3" style="max-width: 540px;">
+                              <div class="row g-0">
+                                <div class="col-md-4">
+                                  <img src="${product.product.url_image}" class="img-fluid rounded-start" alt="...">
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="card-body">
+                                    <h5 class="card-title">${product.product.name}</h5>
+                                    <h5 class="card-title">$ ${product.product.price}</h5>
+                                    <h5 class="card-title">${product.quantity}</h5>
+                                  </div>
+                                </div>
+                                <div class="col-md-2 btn-remove">
+                                  <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
+                                  >
+                                    <img  src="./assets/delete.png" onclick="removeProduct(${product.id})" class="img-fluid rounded-start" alt="remove">
+                                  </button>
+                                  
+                                </div>
+                              </div>
+                            </div>`;
+  });
+}
+
+function removeProduct(productId) {
+  const cart = JSON.parse(localStorage.getItem('cart'));
+
+  result = cart.filter((product) => product.id !== productId);
+  localStorage.setItem('cart', JSON.stringify(result));
+  showProductsCart(result);
+}
+
 console.log(cart);
 getProductsList();

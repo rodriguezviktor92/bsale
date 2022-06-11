@@ -61,6 +61,15 @@
             <button id="search" class="btn btn-outline-success" type="submit">
               Search
             </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              style="margin-left: 15px"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              <img src="./assets/shopping-cart.png" alt="cart" />
+            </button>
           </div>
         </div>
       </nav>
@@ -72,6 +81,30 @@
         id="productList"
         class="row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4"
       ></div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">You Cart</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div id="cartModal" class="modal-body"></div>
+        </div>
+      </div>
     </div>
 
     <nav aria-label="pagination">

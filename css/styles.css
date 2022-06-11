@@ -17,3 +17,8 @@ header {
 .discount {
   height: 0;
 }
+
+.btn-remove {
+  display: flex;
+  flex-direction: column;
+}
