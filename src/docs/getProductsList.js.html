@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: getProductsList.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: getProductsList.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * GetProductsList Module
+ * @module GetProductsList
+ *
+ * @author  victor Rodriguez &lt;rodriguezviktor@gmail.com>
+ * @version 1.0.0
+ * @description Consulta el servicio para obtener los productos y los renderiza en la pagina.
+ */
+
+import { discountPrice } from './utils/utils.js';
+import { getProducts } from './service/getProducts.js';
+/**
+ * Esta variable almacena los productos encontrados segun los criterios solicitados por el usuario.
+ * @type {Array}
+ */
+let currentProducts = [];
+
+/**
+ * Esta variable hace referencia al div donde se agregan los productos.
+ * @type {Node&lt;HTMLDivElement>}
+ */
+const productList = document.getElementById('productList');
+
+/**
+ * Esta variable hace referencia al UL donde se agregan las paginas.
+ * @type {Node&lt;HTMLUListElement>}
+ */
+const paginationUL = document.getElementById('pagination');
+
+/**
+ * Esta funcion consume el servicio getProducts para obtener y renderizar los productos que coinciden con los criterioas solicitados por el usuario.
+ * @param {Number} currentPage Numero de pagina que se quiere mostrar al usuario.
+ * @async
+ * @returns {void}
+ */
+async function getProductsList(currentPage = 0) {
+  const default_url_image =
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRssaEpDZ2QDfCM4FHEBDx6C9lJ2VolMcKtvm3QdvSxTcDrWnMjzAUAja636gNn0LBYlbY&amp;usqp=CAU';
+  const search = document.getElementById('searchInput').value.trim();
+  const category = document.getElementById('category').value.trim();
+
+  productList.innerHTML = `&lt;div class="d-flex align-items-center">
+    &lt;strong>Loading...&lt;/strong>
+    &lt;div class="spinner-border ms-auto" role="status" aria-hidden="true">&lt;/div>
+  &lt;/div>`;
+
+  try {
+    const data = await getProducts(search, category, currentPage);
+
+    if (data.content.length) {
+      currentProducts = data.content;
+      productList.innerHTML = '';
+      data.content.forEach((product) => {
+        const image = product.url_image ? product.url_image : default_url_image;
+
+        productList.innerHTML += `&lt;div class="col d-flex justify-content-center mb-4">
+                          &lt;div class="card shadow mb-1 bg-dark rounded" style="width: 20rem">
+                              &lt;img
+                                  src="${image}"
+                                  class="card-img-top img_cover"
+                                  alt="${product.name}"
+                              />
+                              
+                              &lt;div class="card-body text-white-50">
+                                  &lt;p class="card-text">${product.name}&lt;/p>
+                              &lt;/div>
+                              &lt;div class="discount card-body text-white-50" style="padding:10px">
+                                &lt;h6 class="card-title" style="text-decoration:line-through;">
+                                  &lt;span>${
+                                    product.discount > 0
+                                      ? `$ ${discountPrice(
+                                          product.price,
+                                          product.discount
+                                        )}`
+                                      : ''
+                                  }&lt;/span>
+                                &lt;/h6>
+                              &lt;/div>
+                              &lt;div
+                                  class="card-body text-white-50 d-flex justify-content-between align-items-baseline" style="padding:10px"
+                              >
+                              &lt;h5 class="card-title">&lt;span>$ ${
+                                product.price
+                              }&lt;/span>&lt;/h5>
+                             
+                              &lt;span  style="font-size: 13px; font-weight: 600; color: green">${
+                                product.discount > 0
+                                  ? `${product.discount}% OFF`
+                                  : ``
+                              }&lt;/span>
+                          &lt;button
+                          type="button"
+                          id="${
+                            product.id
+                          }" class="btn-add-cart btn btn-primary">Add to cart&lt;/button>
+                          &lt;/div>
+                      &lt;/div>
+                  `;
+      });
+
+      paginationUL.innerHTML = `&lt;li class="pagination page-item">&lt;a id="prev" class="page-link" href="#">Prev&lt;/a>&lt;/li>`;
+
+      for (let i = 1; i &lt;= data.totalPages; i++) {
+        const pageNumber = i - 1;
+        if (i === 1) {
+          paginationUL.innerHTML += `&lt;li class="pagination age-item cursor-pointer">&lt;a id="${pageNumber}" class="page-link" href="#">${i}&lt;/a>&lt;/li>`;
+        } else {
+          paginationUL.innerHTML += `&lt;li class="pagination page-item cursor-pointer">&lt;a id="${pageNumber}"  class="page-link" href="#">${i}&lt;/a>&lt;/li>`;
+        }
+      }
+
+      paginationUL.innerHTML += `&lt;li class="pagination page-item">&lt;a id="next" class="page-link" href="#">Next&lt;/a>&lt;/li>`;
+
+      if (parseInt(currentPage) === data.totalPages - 1)
+        document.getElementById('next').classList.add('disabled');
+
+      if (parseInt(currentPage) === 0)
+        document.getElementById('prev').classList.add('disabled');
+
+      document.getElementById(currentPage).classList.add('active');
+    } else {
+      /* cambiar para que muestre 1 div */
+      productList.classList.add('notFound');
+
+      productList.innerHTML = `&lt;div class="col d-flex justify-content-center mb-4">
+          &lt;p class="card-text">Sorry, we didn't find any product&lt;/p>
+          &lt;/div>`;
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export { getProductsList, currentProducts };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Cart.html">Cart</a></li><li><a href="module-GetCategoriesList.html">GetCategoriesList</a></li><li><a href="module-GetProductsList.html">GetProductsList</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-scripts.html">scripts</a></li><li><a href="module-Service_GetProducts.html">Service_GetProducts</a></li><li><a href="module-Utils.html">Utils</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Sat Jun 11 2022 18:20:14 GMT-0500 (hora estándar de Perú)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
