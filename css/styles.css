@@ -22,3 +22,15 @@ header {
   display: flex;
   flex-direction: column;
 }
+
+.btn-cart {
+  margin-left: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.count-cart {
+  position: absolute;
+  bottom: 13px;
+}

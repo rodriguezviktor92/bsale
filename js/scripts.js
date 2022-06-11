@@ -3,6 +3,7 @@ const searchButton = document.getElementById('search');
 const categorySelect = document.getElementById('category');
 const paginationUL = document.getElementById('pagination');
 const cartModal = document.getElementById('cartModal');
+const countCart = document.getElementById('countCart');
 
 searchButton.addEventListener('click', () => getProductsList());
 categorySelect.addEventListener('change', () => getProductsList());
@@ -138,8 +139,9 @@ function discountPrice(price, discount) {
 
 function getCart() {
   if (localStorage.getItem('cart')) {
-    showProductsCart(JSON.parse(localStorage.getItem('cart')));
-    return JSON.parse(localStorage.getItem('cart'));
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    showProductsCart(cart);
+    return cart;
   } else {
     const cart = [];
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -156,7 +158,6 @@ function addToCart(productId) {
 
     localStorage.setItem('cart', JSON.stringify(cart));
     showProductsCart(cart);
-    alert('Agregado al carrito');
   } else {
     const currentProduct = currentProducts.find(
       (product) => product.id === productId
@@ -172,13 +173,13 @@ function addToCart(productId) {
 
     localStorage.setItem('cart', JSON.stringify(cart));
     showProductsCart(cart);
-    alert('Agregado al carrito');
   }
 }
 
 const cart = getCart();
 
 function showProductsCart(cart) {
+  countCart.innerHTML = cart.length;
   cartModal.innerHTML = '';
   cart.forEach((product) => {
     cartModal.innerHTML += `<div class="card mb-3" style="max-width: 540px;">
@@ -197,8 +198,6 @@ function showProductsCart(cart) {
                                   <button
                                     type="button"
                                     class="btn btn-primary"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal"
                                   >
                                     <img  src="./assets/delete.png" onclick="removeProduct(${product.id})" class="img-fluid rounded-start" alt="remove">
                                   </button>
