@@ -2,6 +2,20 @@
 
 \_Desafio tecnico para Bsale programado con ❤️ por [Victor rodriguez](https://www.linkedin.com/in/cv-victor-rodriguez/) 😊\_
 
+_Esta aplicacion ofrece al usuario las siguientes opciones:_
+
+_Ver los productos disponibles_
+
+_Buscar productos por nombre._
+
+_Filtrar productos por categorias._
+
+_Agregar productos al carrito de compras (LocalStorage)._
+
+_Eliminar productos del carrito de compras (LocalStorage)._
+
+_Diseño responsive en movil, table y desktop_
+
 ## Comenzando 🚀
 
 _Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
