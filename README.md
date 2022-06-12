@@ -4,17 +4,17 @@
 
 _Esta aplicacion ofrece al usuario las siguientes opciones:_
 
-_Ver los productos disponibles_
+- Ver los productos disponibles
 
-_Buscar productos por nombre._
+- Buscar productos por nombre.
 
-_Filtrar productos por categorias._
+- Filtrar productos por categorias.
 
-_Agregar productos al carrito de compras (LocalStorage)._
+- Agregar productos al carrito de compras (LocalStorage).
 
-_Eliminar productos del carrito de compras (LocalStorage)._
+- Eliminar productos del carrito de compras (LocalStorage).
 
-_Diseño responsive en movil, table y desktop_
+- Diseño responsive en movil, table y desktop
 
 ## Comenzando 🚀
 

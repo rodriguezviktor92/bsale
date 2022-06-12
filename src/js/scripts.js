@@ -16,7 +16,7 @@ import { getCategories } from './service/getCategories.js';
  * Esta veriable contiene el host del backend
  * @type {String}
  */
-const host = 'http://localhost:3001/';
+const host = 'https://victor-api-bsale.herokuapp.com/';
 
 /**
  * Esta variable hace referencia al input en el cual el usuario puede hacer busquedas.
