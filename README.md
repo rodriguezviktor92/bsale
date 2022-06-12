@@ -24,6 +24,9 @@ _Estas instrucciones te permitirán obtener una copia del proyecto en funcionami
 
 _Aqui pueden ver el proyecto en funcionamiento_
 
+- [Deploy](https://bsale.onrender.com/)
+- [Documentacion](https://bsale-doc.onrender.com/)
+
 ### Pre-requisitos 📋
 
 _Necesitaras tener node instalado en tu equipo sino lo tienes lo puedes descargar aqui:_
@@ -34,7 +37,7 @@ https://nodejs.org/es/download/
 
 ### Instalación 🔧
 
-_Luego de clonar el repositorio se deben instalar las dependencias_
+_Luego de clonar el repositorio se deben instalar la dependencia para la documentacion_
 
 ```
 npm i
@@ -48,7 +51,7 @@ npm i
 
 ## Documentación 📖
 
-Puedes encontrar la documentacion del proyecto en la siguiente url [Wiki](https://github.com/tu/proyecto/wiki)
+Puedes encontrar la documentacion del proyecto en la siguiente url [Wiki](https://bsale-doc.onrender.com/)
 
 ## Autor ✒️
 
