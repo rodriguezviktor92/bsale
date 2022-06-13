@@ -7,8 +7,8 @@
  * @description Consulta el servicio para obtener los productos y los renderiza en la pagina.
  */
 
-import { discountPrice } from './utils/utils.js';
 import { getProducts } from './service/getProducts.js';
+import { createPageLink } from './paginatioinLink.js';
 /**
  * Esta variable almacena los productos encontrados segun los criterios solicitados por el usuario.
  * @type {Array}
@@ -49,67 +49,31 @@ async function getProductsList(currentPage = 0) {
 
     if (data.content.length) {
       currentProducts = data.content;
-      productList.innerHTML = '';
+      /* productList.innerHTML = ''; */
+      productList.replaceChildren();
       data.content.forEach((product) => {
         const image = product.url_image ? product.url_image : default_url_image;
 
-        productList.innerHTML += `<div class="col d-flex justify-content-center mb-4">
-                          <div class="card shadow mb-1 bg-dark rounded" style="width: 20rem">
-                              <img
-                                  src="${image}"
-                                  class="card-img-top img_cover"
-                                  alt="${product.name}"
-                              />
-                              
-                              <div class="card-body text-white-50">
-                                  <p class="card-text">${product.name}</p>
-                              </div>
-                              <div class="discount card-body text-white-50" style="padding:10px">
-                                <h6 class="card-title" style="text-decoration:line-through;">
-                                  <span>${
-                                    product.discount > 0
-                                      ? `$ ${discountPrice(
-                                          product.price,
-                                          product.discount
-                                        )}`
-                                      : ''
-                                  }</span>
-                                </h6>
-                              </div>
-                              <div
-                                  class="card-body text-white-50 d-flex justify-content-between align-items-baseline" style="padding:10px"
-                              >
-                              <h5 class="card-title"><span>$ ${
-                                product.price
-                              }</span></h5>
-                             
-                              <span  style="font-size: 13px; font-weight: 600; color: green">${
-                                product.discount > 0
-                                  ? `${product.discount}% OFF`
-                                  : ``
-                              }</span>
-                          <button
-                          type="button"
-                          id="${
-                            product.id
-                          }" class="btn-add-cart btn btn-primary">Add to cart</button>
-                          </div>
-                      </div>
-                  `;
+        const cardProduct = document.createElement('card-product');
+
+        cardProduct.setAttribute('image', image);
+        cardProduct.setAttribute('name', product.name);
+        cardProduct.setAttribute('discount', product.discount);
+        cardProduct.setAttribute('price', product.price);
+        cardProduct.setAttribute('id', product.id);
+
+        productList.appendChild(cardProduct);
       });
 
-      paginationUL.innerHTML = `<li class="pagination page-item"><a id="prev" class="page-link" href="#">Prev</a></li>`;
+      paginationUL.replaceChildren();
+      paginationUL.appendChild(createPageLink('prev', 'Prev'));
 
       for (let i = 1; i <= data.totalPages; i++) {
         const pageNumber = i - 1;
-        if (i === 1) {
-          paginationUL.innerHTML += `<li class="pagination age-item cursor-pointer"><a id="${pageNumber}" class="page-link" href="#">${i}</a></li>`;
-        } else {
-          paginationUL.innerHTML += `<li class="pagination page-item cursor-pointer"><a id="${pageNumber}"  class="page-link" href="#">${i}</a></li>`;
-        }
+        paginationUL.appendChild(createPageLink(pageNumber, i));
       }
 
-      paginationUL.innerHTML += `<li class="pagination page-item"><a id="next" class="page-link" href="#">Next</a></li>`;
+      paginationUL.appendChild(createPageLink('next', 'Next'));
 
       if (parseInt(currentPage) === data.totalPages - 1)
         document.getElementById('next').classList.add('disabled');
