@@ -26,7 +26,7 @@ const host = 'http://localhost:3001/';
 const searchButton = document.getElementById('search');
 
 /**
- * Esta variable hace referencia al select el cual el usuario puede seleccionar la categoria para aplicar un filtro.
+ * Esta variable hace referencia al select en cual el usuario puede seleccionar la categoria para aplicar un filtro.
  * @type {Node<HTMLSelectElement>}
  */
 const categorySelect = document.getElementById('category');
@@ -42,7 +42,16 @@ const paginationLI = document.querySelector('.pagination');
  * @type {Node<HTMLInputElement>}
  */
 const searchInput = document.getElementById('searchInput');
+/**
+ * Esta variable hace referencia al select en cual el usuario puede ordenar de menor a mayor precio los productos.
+ * @type {Node<HTMLSelectElement>}
+ */
 const orderPrice = document.getElementById('orderPrice');
+/**
+ * Esta variable hace referencia al select en cual el usuario puede seleccionar el descuento de los productos que deas ver.
+ * @type {Node<HTMLSelectElement>}
+ */
+
 const filterDiscount = document.getElementById('filterDiscount');
 
 searchInput.addEventListener('keydown', (event) => {
