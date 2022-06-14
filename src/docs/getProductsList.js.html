@@ -35,8 +35,8 @@
  * @description Consulta el servicio para obtener los productos y los renderiza en la pagina.
  */
 
-import { discountPrice } from './utils/utils.js';
 import { getProducts } from './service/getProducts.js';
+import { createPageLink } from './paginatioinLink.js';
 /**
  * Esta variable almacena los productos encontrados segun los criterios solicitados por el usuario.
  * @type {Array}
@@ -66,6 +66,8 @@ async function getProductsList(currentPage = 0) {
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRssaEpDZ2QDfCM4FHEBDx6C9lJ2VolMcKtvm3QdvSxTcDrWnMjzAUAja636gNn0LBYlbY&amp;usqp=CAU';
   const search = document.getElementById('searchInput').value.trim();
   const category = document.getElementById('category').value.trim();
+  const orderPrice = document.getElementById('orderPrice').value.trim();
+  const filterDiscount = document.getElementById('filterDiscount').value.trim();
 
   productList.innerHTML = `&lt;div class="d-flex align-items-center">
     &lt;strong>Loading...&lt;/strong>
@@ -73,71 +75,41 @@ async function getProductsList(currentPage = 0) {
   &lt;/div>`;
 
   try {
-    const data = await getProducts(search, category, currentPage);
+    const data = await getProducts(
+      search,
+      category,
+      orderPrice,
+      filterDiscount,
+      currentPage
+    );
 
     if (data.content.length) {
       currentProducts = data.content;
-      productList.innerHTML = '';
+      /* productList.innerHTML = ''; */
+      productList.replaceChildren();
       data.content.forEach((product) => {
         const image = product.url_image ? product.url_image : default_url_image;
 
-        productList.innerHTML += `&lt;div class="col d-flex justify-content-center mb-4">
-                          &lt;div class="card shadow mb-1 bg-dark rounded" style="width: 20rem">
-                              &lt;img
-                                  src="${image}"
-                                  class="card-img-top img_cover"
-                                  alt="${product.name}"
-                              />
-                              
-                              &lt;div class="card-body text-white-50">
-                                  &lt;p class="card-text">${product.name}&lt;/p>
-                              &lt;/div>
-                              &lt;div class="discount card-body text-white-50" style="padding:10px">
-                                &lt;h6 class="card-title" style="text-decoration:line-through;">
-                                  &lt;span>${
-                                    product.discount > 0
-                                      ? `$ ${discountPrice(
-                                          product.price,
-                                          product.discount
-                                        )}`
-                                      : ''
-                                  }&lt;/span>
-                                &lt;/h6>
-                              &lt;/div>
-                              &lt;div
-                                  class="card-body text-white-50 d-flex justify-content-between align-items-baseline" style="padding:10px"
-                              >
-                              &lt;h5 class="card-title">&lt;span>$ ${
-                                product.price
-                              }&lt;/span>&lt;/h5>
-                             
-                              &lt;span  style="font-size: 13px; font-weight: 600; color: green">${
-                                product.discount > 0
-                                  ? `${product.discount}% OFF`
-                                  : ``
-                              }&lt;/span>
-                          &lt;button
-                          type="button"
-                          id="${
-                            product.id
-                          }" class="btn-add-cart btn btn-primary">Add to cart&lt;/button>
-                          &lt;/div>
-                      &lt;/div>
-                  `;
+        const cardProduct = document.createElement('card-product');
+
+        cardProduct.setAttribute('image', image);
+        cardProduct.setAttribute('name', product.name);
+        cardProduct.setAttribute('discount', product.discount);
+        cardProduct.setAttribute('price', product.price);
+        cardProduct.setAttribute('id', product.id);
+
+        productList.appendChild(cardProduct);
       });
 
-      paginationUL.innerHTML = `&lt;li class="pagination page-item">&lt;a id="prev" class="page-link" href="#">Prev&lt;/a>&lt;/li>`;
+      paginationUL.replaceChildren();
+      paginationUL.appendChild(createPageLink('prev', 'Prev'));
 
       for (let i = 1; i &lt;= data.totalPages; i++) {
         const pageNumber = i - 1;
-        if (i === 1) {
-          paginationUL.innerHTML += `&lt;li class="pagination age-item cursor-pointer">&lt;a id="${pageNumber}" class="page-link" href="#">${i}&lt;/a>&lt;/li>`;
-        } else {
-          paginationUL.innerHTML += `&lt;li class="pagination page-item cursor-pointer">&lt;a id="${pageNumber}"  class="page-link" href="#">${i}&lt;/a>&lt;/li>`;
-        }
+        paginationUL.appendChild(createPageLink(pageNumber, i));
       }
 
-      paginationUL.innerHTML += `&lt;li class="pagination page-item">&lt;a id="next" class="page-link" href="#">Next&lt;/a>&lt;/li>`;
+      paginationUL.appendChild(createPageLink('next', 'Next'));
 
       if (parseInt(currentPage) === data.totalPages - 1)
         document.getElementById('next').classList.add('disabled');
@@ -176,7 +148,7 @@ export { getProductsList, currentProducts };
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Sat Jun 11 2022 18:45:06 GMT-0500 (hora estándar de Perú)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue Jun 14 2022 13:32:38 GMT-0500 (hora estándar de Perú)
 </footer>
 
 <script> prettyPrint(); </script>
