@@ -15,9 +15,11 @@ import { host } from '../scripts.js';
  * @param {Number} page Numero de pagina que desea visilizar el usuario.
  * @returns {Promise}
  */
-async function getProducts(search, category, page) {
+async function getProducts(search, category, orderPrice, filterDiscount, page) {
   return await fetch(
-    `${host}products?name=${search}&category=${parseInt(category)}&page=${page}`
+    `${host}products?name=${search}&category=${parseInt(
+      category
+    )}&order=${orderPrice}&discount=${filterDiscount}&page=${page}`
   ).then((response) => response.json());
 }
 

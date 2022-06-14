@@ -59,6 +59,32 @@
     </header>
 
     <div class="container pt-3">
+      <div class="d-flex">
+        <div class="w-50 p-2">
+          <span>Order by price</span>
+          <select
+            id="orderPrice"
+            class="form-select"
+            aria-label="Default select example"
+          >
+            <option value="0" selected="selected">All</option>
+            <option value="DESC">High</option>
+            <option value="ASC">Low</option>
+          </select>
+        </div>
+        <div class="w-50 p-2">
+          <span>Filter by discount</span>
+          <select
+            id="filterDiscount"
+            class="form-select"
+            aria-label="Default select example"
+          >
+            <option value="0" selected="selected">All</option>
+            <option value="10">10%</option>
+            <option value="20">20%</option>
+          </select>
+        </div>
+      </div>
       <h2>Products</h2>
       <div
         id="productList"

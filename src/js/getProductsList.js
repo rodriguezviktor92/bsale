@@ -38,6 +38,8 @@ async function getProductsList(currentPage = 0) {
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRssaEpDZ2QDfCM4FHEBDx6C9lJ2VolMcKtvm3QdvSxTcDrWnMjzAUAja636gNn0LBYlbY&usqp=CAU';
   const search = document.getElementById('searchInput').value.trim();
   const category = document.getElementById('category').value.trim();
+  const orderPrice = document.getElementById('orderPrice').value.trim();
+  const filterDiscount = document.getElementById('filterDiscount').value.trim();
 
   productList.innerHTML = `<div class="d-flex align-items-center">
     <strong>Loading...</strong>
@@ -45,7 +47,13 @@ async function getProductsList(currentPage = 0) {
   </div>`;
 
   try {
-    const data = await getProducts(search, category, currentPage);
+    const data = await getProducts(
+      search,
+      category,
+      orderPrice,
+      filterDiscount,
+      currentPage
+    );
 
     if (data.content.length) {
       currentProducts = data.content;

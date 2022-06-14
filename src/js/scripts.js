@@ -16,7 +16,8 @@ import { getCategories } from './service/getCategories.js';
  * Esta veriable contiene el host del backend
  * @type {String}
  */
-const host = 'https://victor-api-bsale.herokuapp.com/';
+/* const host = 'https://victor-api-bsale.herokuapp.com/'; */
+const host = 'http://localhost:3001/';
 
 /**
  * Esta variable hace referencia al button en el cual el usuario puede hacer busquedas.
@@ -41,12 +42,16 @@ const paginationLI = document.querySelector('.pagination');
  * @type {Node<HTMLInputElement>}
  */
 const searchInput = document.getElementById('searchInput');
+const orderPrice = document.getElementById('orderPrice');
+const filterDiscount = document.getElementById('filterDiscount');
 
 searchInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     searchButton.click();
   }
 });
+orderPrice.addEventListener('change', () => getProductsList());
+filterDiscount.addEventListener('change', () => getProductsList());
 
 searchButton.addEventListener('click', () => getProductsList());
 categorySelect.addEventListener('change', () => getProductsList());
