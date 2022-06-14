@@ -15,8 +15,10 @@ class CardProduct extends HTMLElement {
 
   attributeChangedCallback(nameAtr, oldValue, newValue) {
     if (nameAtr === 'discount' || nameAtr === 'price') {
-      this[nameAtr] = parseInt(newValue);
-    } else {
+      if (newValue !== oldValue) {
+        this[nameAtr] = parseInt(newValue);
+      }
+    } else if (newValue !== oldValue) {
       this[nameAtr] = newValue;
     }
   }
