@@ -19,8 +19,8 @@ import { getCategories } from './service/getCategories.js';
 const host = 'https://victor-api-bsale.herokuapp.com/';
 
 /**
- * Esta variable hace referencia al input en el cual el usuario puede hacer busquedas.
- * @type {Node<HTMLInputElement>}
+ * Esta variable hace referencia al button en el cual el usuario puede hacer busquedas.
+ * @type {Node<HTMLButtonElement>}
  */
 const searchButton = document.getElementById('search');
 
@@ -35,6 +35,18 @@ const categorySelect = document.getElementById('category');
  * @type {Node<HTMLUListElement>}
  */
 const paginationLI = document.querySelector('.pagination');
+
+/**
+ * Esta variable hace referencia al input en el cual el usuario puede hacer busquedas.
+ * @type {Node<HTMLInputElement>}
+ */
+const searchInput = document.getElementById('searchInput');
+
+searchInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    searchButton.click();
+  }
+});
 
 searchButton.addEventListener('click', () => getProductsList());
 categorySelect.addEventListener('change', () => getProductsList());
